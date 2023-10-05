@@ -5,3 +5,6 @@ from django.views.generic import TemplateView # Import TemplateView
 
 def home(request):
 	return render(request, "index.html", {})
+
+def blank(request):
+	return render(request, "blank.html", {})

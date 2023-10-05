@@ -3,5 +3,6 @@ from django.views.generic import TemplateView
 from sensors import views
 
 urlpatterns = [    
-    url('^$', views.home, name='home'),   
+    url('^$', views.home, name='home'),
+    url('^blank-page/$', views.blank, name='blank'),     
 ]

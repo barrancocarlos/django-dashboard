@@ -5,5 +5,6 @@ from sensors import views
 urlpatterns = [    
     url('^$', views.home, name='home'),
     url('^blank-page/$', views.blank, name='blank'), 
-    url('^temp-table/$', views.temperatureList, name='temp-table'),    
+    url('^temp-table/$', views.temperatureList, name='temp-table'),
+    url('^temp-add/$', views.temperatureCreate, name='temp-add'),      
 ]

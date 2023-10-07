@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView # Import TemplateView
 from .models import Temperature
 
@@ -12,4 +12,13 @@ def blank(request):
 
 def temperatureList(request):  
     temperatures = Temperature.objects.all()      
-    return render(request,"temp-table.html", {'temperatures': temperatures}) 
+    return render(request,"temp-table.html", {'temperatures': temperatures})   
+  
+def temperatureCreate(request): 
+  if request.POST: 
+    newTemperature = Temperature()
+    newTemperature.value = request.POST['value']
+    newTemperature.save()
+    return redirect(temperatureList)
+  else:
+    return render(request, "temp-add.html")

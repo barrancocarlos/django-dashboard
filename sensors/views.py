@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import TemplateView # Import TemplateView
 from .models import Temperature
+from rest_framework import viewsets
+from rest_framework import status, viewsets
+from rest_framework.response import Response
+from .serializers import TemperatureSerializer 
 
 # Create your views here.
 
@@ -49,5 +52,14 @@ def temperatureUpdate(request, id):
     return redirect(temperatureList)
   else:
     return render(request, "temp-update.html", temperatures)  
+  
+
+class TemperatureViewset(viewsets.ViewSet):
+      def create(self, request):        
+        serializer = TemperatureSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)            
+        the_response = TemperatureSerializer(serializer.save())
+        return Response(the_response.data, status=status.HTTP_201_CREATED)
+     
   
 

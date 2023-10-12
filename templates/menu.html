@@ -93,6 +93,15 @@
                  <div data-i18n="Analytics">Temperature Add</div>
                </a>
              </li>
+
+             <!-- Temperature Graphs -->
+             {% url 'temp-graphs' as url %}
+             <li class="menu-item {% if request.path == url %}active{% endif %}">
+               <a href="{% url 'temp-graphs' %}" class="menu-link">
+                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                 <div data-i18n="Analytics">Temperature Graphs</div>
+               </a>
+             </li>
              
       
 

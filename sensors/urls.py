@@ -14,5 +14,6 @@ urlpatterns = [
     path('temp-add/', views.temperatureCreate, name='temp-add'),
     path('temp-update/<int:id>/', views.temperatureUpdate, name='temp-update'),    
     path('temp-single/<int:id>/', views.temperatureListOne, name='temp-single'),
+    path('temp-graphs/', views.temperatureGraphs, name='temp-graphs'),
     path('api/', include(router.urls)),         
 ]

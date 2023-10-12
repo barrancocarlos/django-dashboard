@@ -53,7 +53,10 @@ def temperatureUpdate(request, id):
   else:
     return render(request, "temp-update.html", temperatures)  
   
-
+def temperatureGraphs(request):
+	return render(request, "temp-graphs.html", {})
+  
+#Rest Api
 class TemperatureViewset(viewsets.ViewSet):
       def create(self, request):        
         serializer = TemperatureSerializer(data=request.data)

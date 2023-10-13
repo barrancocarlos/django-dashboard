@@ -54,7 +54,9 @@ def temperatureUpdate(request, id):
     return render(request, "temp-update.html", temperatures)  
   
 def temperatureGraphs(request):
-	return render(request, "temp-graphs.html", {})
+  temperature = Temperature.objects.all()    
+  temperatures = {'temperatures': temperature}
+  return render(request, "temp-graphs.html", temperatures)
   
 #Rest Api
 class TemperatureViewset(viewsets.ViewSet):

@@ -2,6 +2,9 @@
 {% include "head.html" %}
 
 <body>
+  {% block content %}  
+
+
   <!-- Layout wrapper -->
   <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
@@ -14,7 +17,7 @@
         <!-- Navbar -->
         {% include "navbar.html" %}
         <!-- / Navbar -->
-
+       
         <!-- Content wrapper -->
         <div class="content-wrapper">
           <!-- Content -->
@@ -30,28 +33,19 @@
                       {% for value in data %}
                         {{value}},
                       {% endfor %}
-                    ], -->
+                    ],
+                  
+                  {% for temperature in temperatures %}
+                  {{ temperature.value }}
+                  {% endfor %}
+                  
+                  
+                  -->
 
-
+                    
                     <!-- Expense Overview -->
                     <div class="card h-100">
-                      <div class="card-header">
-                        <ul class="nav nav-pills" role="tablist">
-                          <li class="nav-item">
-                            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                              data-bs-target="#navs-tabs-line-card-income" aria-controls="navs-tabs-line-card-income"
-                              aria-selected="true">
-                              Income
-                            </button>
-                          </li>
-                          <li class="nav-item">
-                            <button type="button" class="nav-link" role="tab">Expenses</button>
-                          </li>
-                          <li class="nav-item">
-                            <button type="button" class="nav-link" role="tab">Profit</button>
-                          </li>
-                        </ul>
-                      </div>
+                   
                       <div class="card-body px-0">
                         <div class="tab-content p-0">
                           <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
@@ -60,26 +54,62 @@
                                 <img src="{% static 'assets/img/icons/unicons/wallet.png' %}" alt="User" />
                               </div>
                               <div>
-                                <small class="text-muted d-block">Total Balance</small>
+                                <small class="text-muted d-block">Temperature</small>
                                 <div class="d-flex align-items-center">
-                                  <h6 class="mb-0 me-1">$459.10</h6>
-                                  <small class="text-success fw-semibold">
-                                    <i class="bx bx-chevron-up"></i>
-                                    42.9%
-                                  </small>
+                                  <h6 class="mb-0 me-1">25</h6>                                  
                                 </div>
                               </div>
                             </div>
-                            <div id="incomeChart"></div>
-                            <div class="d-flex justify-content-center pt-4 gap-2">
-                              <div class="flex-shrink-0">
-                                <div id="expensesOfWeek"></div>
-                              </div>
-                              <div>
-                                <p class="mb-n1 mt-1">Expenses This Week</p>
-                                <small class="text-muted">$39 less than last week</small>
-                              </div>
-                            </div>
+
+                            <!-- chart div -->
+                            <div id="chart"></div>
+                            <!-- Area chart-------------------------------------------------------------------- -->
+                         
+                            <script type="text/javascript">
+
+                              
+                             
+                              var options = {
+                                series: [{    
+                                                                
+                                  data: [{% for temperature in temperatures %}{{ temperature.value}}{% if not forloop.last %},{% endif %}{% endfor %}]
+                                  //data: [24, 21, 30, 22, 42]
+                              }],
+                                chart: {
+                                height: 350,
+                                type: 'area',
+                                zoom: {
+                                  enabled: false
+                                }
+                              },
+                              dataLabels: {
+                                enabled: false
+                              },
+                              stroke: {
+                                curve: 'straight'
+                              },
+                              title: {
+                                text: 'Temperature',
+                                align: 'left'
+                              },
+                              grid: {
+                                row: {
+                                  colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                                  opacity: 0.5
+                                },
+                              },
+                              xaxis: {
+                                categories: [{% for temperature in temperatures %}'{{ temperature.creation_date }}',{% endfor %}],
+                                //categories: [1, 2, 3, 4, 5,],                                
+                              }
+                              };
+                            
+                              var chart = new ApexCharts(document.querySelector("#chart"), options);
+                              chart.render();
+                            </script>    
+
+
+                           
                           </div>
                         </div>
                       </div>
@@ -121,7 +151,10 @@
             </div>
           </div>
         </div>
+
         <!-- / Content -->
+       
+        {% endblock %}
 
         <!-- Footer -->
         {% include "footer.html" %}

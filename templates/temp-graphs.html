@@ -1,9 +1,7 @@
-{% load static %}
-{% include "head.html" %}
+{% load static %} {% include "head.html" %}
 
 <body>
-  {% block content %}  
-
+  {% block content %}
 
   <!-- Layout wrapper -->
   <div class="layout-wrapper layout-content-navbar">
@@ -17,7 +15,7 @@
         <!-- Navbar -->
         {% include "navbar.html" %}
         <!-- / Navbar -->
-       
+
         <!-- Content wrapper -->
         <div class="content-wrapper">
           <!-- Content -->
@@ -26,37 +24,28 @@
               <div class="col-lg-8 mb-4 order-0">
                 <div class="card">
                   <div class="d-flex align-items-end row">
-
-
-                   <!-- Code for Chart (https://stackoverflow.com/questions/70555153/passing-django-view-data-to-javascript-chart)
-                      series: [ 
-                      {% for value in data %}
-                        {{value}},
-                      {% endfor %}
-                    ],
-                  
-                  {% for temperature in temperatures %}
-                  {{ temperature.value }}
-                  {% endfor %}
-                  
-                  
-                  -->
-
-                    
                     <!-- Expense Overview -->
                     <div class="card h-100">
-                   
                       <div class="card-body px-0">
                         <div class="tab-content p-0">
-                          <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
+                          <div
+                            class="tab-pane fade show active"
+                            id="navs-tabs-line-card-income"
+                            role="tabpanel"
+                          >
                             <div class="d-flex p-4 pt-3">
                               <div class="avatar flex-shrink-0 me-3">
-                                <img src="{% static 'assets/img/icons/unicons/wallet.png' %}" alt="User" />
+                                <img
+                                  src="{% static 'assets/img/icons/unicons/wallet.png' %}"
+                                  alt="User"
+                                />
                               </div>
                               <div>
                                 <small class="text-muted d-block">Temperature</small>
                                 <div class="d-flex align-items-center">
-                                  <h6 class="mb-0 me-1">25</h6>                                  
+                                  
+                                  <h6 class="mb-0 me-1"></h6>
+                                 
                                 </div>
                               </div>
                             </div>
@@ -64,58 +53,13 @@
                             <!-- chart div -->
                             <div id="chart"></div>
                             <!-- Area chart-------------------------------------------------------------------- -->
-                         
-                            <script type="text/javascript">
-
-                              
-                             
-                              var options = {
-                                series: [{    
-                                                                
-                                  data: [{% for temperature in temperatures %}{{ temperature.value}}{% if not forloop.last %},{% endif %}{% endfor %}]
-                                  //data: [24, 21, 30, 22, 42]
-                              }],
-                                chart: {
-                                height: 350,
-                                type: 'area',
-                                zoom: {
-                                  enabled: false
-                                }
-                              },
-                              dataLabels: {
-                                enabled: false
-                              },
-                              stroke: {
-                                curve: 'straight'
-                              },
-                              title: {
-                                text: 'Temperature',
-                                align: 'left'
-                              },
-                              grid: {
-                                row: {
-                                  colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                                  opacity: 0.5
-                                },
-                              },
-                              xaxis: {
-                                categories: [{% for temperature in temperatures %}'{{ temperature.creation_date }}',{% endfor %}],
-                                //categories: [1, 2, 3, 4, 5,],                                
-                              }
-                              };
+                            {% include "temp-graphs-code.html" %}
                             
-                              var chart = new ApexCharts(document.querySelector("#chart"), options);
-                              chart.render();
-                            </script>    
-
-
-                           
                           </div>
                         </div>
                       </div>
                     </div>
                     <!--/ Expense Overview -->
-
                   </div>
                 </div>
               </div>
@@ -124,25 +68,25 @@
                   <div class="col-lg-6 col-md-12 col-6 mb-4">
                     <div class="card">
                       <div class="card-body">
-                        <div class="card-title d-flex align-items-start justify-content-between">
+                        <div
+                          class="card-title d-flex align-items-start justify-content-between"
+                        >
                           <div class="avatar flex-shrink-0">
-                            <img src="{% static 'assets/img/icons/unicons/chart-success.png' %}" alt="chart success"
-                              class="rounded" />
-                          </div>
-                          <div class="dropdown">
-                            <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="false">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                              <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                              <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                            </div>
-                          </div>
+                            <img
+                              src="{% static 'assets/img/icons/unicons/chart-success.png' %}"
+                              alt="chart success"
+                              class="rounded"
+                            />
+                          </div>                         
                         </div>
-                        <span class="fw-semibold d-block mb-1">Profit</span>
-                        <h3 class="card-title mb-2">$12,628</h3>
-                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                        <span class="fw-semibold d-block mb-1">Last Temperature</span>
+                        {% for temperature in temperatures %}
+                        {% if forloop.last %}
+                        <h3 class="card-title mb-2">{{ temperature.value }} º</h3>
+                        <small class="text-success fw-semibold"> {{ temperature.creation_date|date:"M d, P" }}</small>
+                        {% endif %}                               
+                        {% endfor %}
+                        
                       </div>
                     </div>
                   </div>
@@ -153,8 +97,12 @@
         </div>
 
         <!-- / Content -->
-       
+
         {% endblock %}
 
         <!-- Footer -->
         {% include "footer.html" %}
+      </div>
+    </div>
+  </div>
+</body>

@@ -55,7 +55,7 @@ def temperatureUpdate(request, id):
   
 def temperatureGraphs(request):
   temperature = Temperature.objects.all()    
-  temperatures = {'temperatures': temperature}
+  temperatures = {'temperatures': temperature}  
   return render(request, "temp-graphs.html", temperatures)
   
 #Rest Api

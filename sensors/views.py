@@ -4,11 +4,34 @@ from rest_framework import viewsets
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from .serializers import TemperatureSerializer 
+from django.contrib.auth import login, authenticate, logout
+from rest_framework.permissions import IsAuthenticated
+
+
 
 # Create your views here.
 
 def home(request):
-	return render(request, "index.html", {})
+  if request.user.is_authenticated:
+    return render(request, "index.html", {})
+  else:    
+   return redirect(userLogin)
+
+def userLogin(request):
+  if request.POST:
+     username = request.POST['username']
+     password = request.POST['password']
+     user = authenticate(username=username, password=password)
+     if user is not None:
+       if user.is_active:
+         login(request, user)
+         return redirect(home)
+  else: 
+    return render(request, "login.html", {})
+  
+def logOut(request):
+  logout(request)
+  return render(request, "login.html", {})
 
 def blank(request):
 	return render(request, "blank.html", {})
@@ -60,11 +83,12 @@ def temperatureGraphs(request):
   
 #Rest Api
 class TemperatureViewset(viewsets.ViewSet):
-      def create(self, request):        
-        serializer = TemperatureSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)            
-        the_response = TemperatureSerializer(serializer.save())
-        return Response(the_response.data, status=status.HTTP_201_CREATED)
+  permission_classes = (IsAuthenticated,)  
+  def create(self, request):
+    serializer = TemperatureSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)            
+    the_response = TemperatureSerializer(serializer.save())
+    return Response(the_response.data, status=status.HTTP_201_CREATED)
      
   
 

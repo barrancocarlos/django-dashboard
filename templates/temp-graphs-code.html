@@ -3,18 +3,18 @@
 
 var options = {
           series: [{
-            name: "Desktops",
+            name: "Grados",
             data: [{% for temperature in temperatures %}{{ temperature.value}}{% if not forloop.last %},{% endif %}{% endfor %}]
         }],
           chart: {
           height: 350,
           type: 'area',
           zoom: {
-            enabled: false
+            enabled: true
           }
         },
         dataLabels: {
-          enabled: true
+          enabled: false
         },
         stroke: {
           curve: 'smooth'
@@ -29,7 +29,7 @@ var options = {
             opacity: 0.5
           },
         },
-        xaxis: {
+        xaxis: {          
           categories: [{% for temperature in temperatures %}'{{ temperature.creation_date|date:"M d, P" }}',{% endfor %}],
         }
         };
